@@ -1,0 +1,3 @@
+Massimo: 5.00
+Minimo: 1.00
+Valor Medio: 3.00
