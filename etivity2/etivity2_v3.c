@@ -199,12 +199,11 @@ double getNum()
     do
     {
         check = scanf("%lf", &valore); // Legge il numero e salva lo stato in 'check'
-        ch = getchar(); // Legge il carattere successivo nel buffer
-        if (check != 1 || ch != '\n') // Controlla se l'input non è un numero o se ci sono altri caratteri
+        ch = getchar();                // Legge il carattere successivo nel buffer
+        if (check != 1 || ch != '\n')  // Controlla se l'input non è un numero o se ci sono altri caratteri
         {
             printf("Errore: Inserisci un numero -> ");
-            while (getchar() != '\n')
-                ; // Consuma i caratteri rimanenti nel buffer di input
+            while (getchar() != '\n');  // Consuma i caratteri rimanenti nel buffer di input
         }
     } while (check != 1 || ch != '\n'); // Continua finché l'input non è valido
 
@@ -233,10 +232,24 @@ void ordinaCrescente(double *ptrVett, int dim)
 // Funzione per salvare il vettore su un file di testo
 void salvaSuFile(double *ptrVett, int dim)
 {
-    FILE *file = fopen("vettore.txt", "w"); // Apre il file in modalità scrittura
+    char YoN;
+    FILE *file;
+
+    do
+    {
+        file = fopen("Salvataggio.txt", "w"); // Apre il file in modalità scrittura
+
+        if (file == NULL)
+        {
+            printf("Errore durante l'apertura del file.\n");
+            printf("\nVuoi riprovare? ");
+            scelta(&YoN);
+        }
+    } while (&YoN && (file == NULL));
+
     if (file == NULL)
     {
-        printf("Errore nell'aprire il file.\n"); // Messaggio in caso di errore nell'apertura del file
+        printf("Impossibile salvare il vettore.");
         return;
     }
 
