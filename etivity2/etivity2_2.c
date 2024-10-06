@@ -1,28 +1,29 @@
 #include <stdio.h>
 #define DIM 20 // Definisce la dimensione massima del vettore
 
-
 void scelta(char *a);
 void stampaVettore(double *ptrVett, int dim);
 void ordinaDecrescente(double *ptrVett, int dim, int i);
+void ordinaCrescente(double *ptrVett, int dim);
+void salvaSuFile(double *ptrVett, int dim);
 int ricercaValore(double *ptrVett, int dim, double val);
-// int ricercaValoreRicorsione(double *ptrVett, int dim, double val, int i);
+double getNum();
 
-void main()
+int main()
 {
     // Introduzione al programma
     printf("Programma che, ricevuti in ingresso gli elementi di un vettore di dimensione");
     printf("\nspecificata dall utente e dimensione massima DIM = 20, implementa, sfruttando la ricorsione, l' ordinamento crescente ");
     printf("\n oppure ricerca un valore inserito da tastiera iterando tra gli elementi.");
-    
-    char riesecuzione, YoN; // Variabili per gestire l'input dell'utente
+
+    char riesecuzione, YoN;  // Variabili per gestire l'input dell'utente
     int MSGcambioValori = 0; // flag per mostrare il messaggio di cambio valori
-    int opzione; // Variabile per memorizzare l'opzione scelta dall'utente
+    int opzione;             // Variabile per memorizzare l'opzione scelta dall'utente
 
     do
     {
         double vettore[DIM]; // Vettore di dimensione massima DIM
-        int n; // Variabile per memorizzare il numero di elementi del vettore
+        int n;               // Variabile per memorizzare il numero di elementi del vettore
 
         if (MSGcambioValori == 1)
         {
@@ -30,7 +31,7 @@ void main()
             printf("Vuoi cabiare i valori del'array? ");
             scelta(&YoN); // Funzione per scegliere Sì o No
         }
-        
+
         // Se l'utente ha scelto di cambiare i valori o è il primo ciclo
         if (YoN || !MSGcambioValori)
         {
@@ -38,14 +39,16 @@ void main()
             do
             {
                 printf("\n\nInserisci la dimensione del vettore (max %d): ", DIM);
-                scanf("%d", &n);
+                n = (int)getNum();
+
             } while (n <= 0 || n > DIM); // Controllo che la dimensione sia valida
 
             // Input degli elementi del vettore
             printf("\nInserisci gli elementi del vettore:\n");
             for (int i = 0; i < n; i++)
             {
-                scanf("%lf", &vettore[i]); // Inserimento dei valori nel vettore
+                printf("Inserisci il %d° numero: ", i + 1);
+                vettore[i] = getNum();
             }
         }
 
@@ -57,24 +60,38 @@ void main()
         printf("Scegli l'operazione:\n");
         printf("1. Ordinamento decrescente\n");
         printf("2. Ricerca di un valore\n");
+        printf("3. Ordinamento crescente\n");
+        printf("4. Salva il vettore su file\n");
         printf("Operazione da eseguire n. -> ");
-        scanf("%d", &opzione);
+        opzione = (int)getNum();
 
         switch (opzione)
         {
         case 1:
             // Ordinamento decrescente
-            ordinaDecrescente(vettore, n, 0); // Funzione per ordinare il vettore
+            ordinaDecrescente(vettore, n, 0); // Funzione per ordinare il vettore a partire dalla posizione 0
             printf("Vettore ordinato: ");
             stampaVettore(vettore, n); // Stampa il vettore ordinato
             break;
 
         case 2:
             // Ricerca di un valore
-            int valore;
+            double valore;
             printf("Inserisci il valore da cercare: ");
-            scanf("%d", &valore); // Inserimento del valore da cercare
+            valore = getNum();                 // Inserimento del valore da cercare
             ricercaValore(vettore, n, valore); // Funzione per cercare il valore
+            break;
+
+        case 3:
+            // ordinamento crescente con bubble sort
+            ordinaCrescente(vettore, n);
+            printf("Vettore ordinato: ");
+            stampaVettore(vettore, n); // Stampa il vettore ordinato
+            break;
+
+        case 4:
+            //salvataggio su file di testo
+            salvaSuFile(vettore, n);
             break;
 
         default:
@@ -84,9 +101,11 @@ void main()
 
         // Chiede all'utente se vuole continuare
         printf("\nVuoi continuare? ");
-        scelta(&YoN); // Funzione per la scelta di continuare o meno
+        scelta(&YoN);        // Funzione per la scelta di continuare o meno
         MSGcambioValori = 1; // Attiva il messaggio per cambiare valori alla prossima iterazione
     } while (YoN); // Ciclo finché l'utente sceglie di continuare
+
+    return 0;
 }
 
 // Funzione per la scelta dell'utente (Sì o No)
@@ -96,8 +115,8 @@ void scelta(char *a)
     {
         printf("(Y/N) : ");
         scanf(" %c", a); // Legge il carattere inserito
-    } while (*a != 'N' && *a != 'n' && *a != 'Y' && *a != 'y'); // Verifica se l'input è valido
-    
+    } while ((*a != 'N' && *a != 'n' && *a != 'Y' && *a != 'y')); // Verifica se l'input è valido
+
     // Converte l'input in valori booleani
     if (*a == 'Y' || *a == 'y')
     {
@@ -115,7 +134,7 @@ void stampaVettore(double *ptrVett, int dim)
     printf("[ ");
     for (int i = 0; i < dim; i++)
     {
-        printf("%lf ", ptrVett[i]); // Stampa ogni elemento del vettore
+        printf("%.3lf ", ptrVett[i]); // Stampa ogni elemento del vettore
     }
     printf("]\n");
 }
@@ -125,7 +144,7 @@ void ordinaDecrescente(double *ptrVett, int dim, int i)
 {
     if (i >= dim - 1)
         return; // Caso base: se si è arrivati alla fine del vettore, termina la ricorsione
-    
+
     int maxIndice = i; // Indice dell'elemento massimo
     for (int j = i + 1; j < dim; j++)
     {
@@ -135,7 +154,7 @@ void ordinaDecrescente(double *ptrVett, int dim, int i)
             maxIndice = j;
         }
     }
-    
+
     // Scambia l'elemento corrente con il massimo trovato
     if (maxIndice != i)
     {
@@ -161,29 +180,89 @@ int ricercaValore(double *ptrVett, int dim, double val)
         // Controlla se l'elemento corrente è uguale al valore cercato
         if (ptrVett[i] == val)
         {
-            printf("Valore %lf trovato all'indice %d.\n", val, i); // Valore trovato
-            flag = 0; // Aggiorna il flag
+            printf("Valore %.3lf trovato all'indice %d.\n", val, i); // Valore trovato
+            flag = 0;                                                // Aggiorna il flag
         }
     }
     if (flag)
         printf("Valore non trovato"); // Messaggio se il valore non è presente
-    
 }
 
-/****** NON PIU' UTILIZZATE ******/
-// Funzione per la ricerca di un valore nel vettore tramite ricorsione
-/*
-int ricercaValoreRicorsione(double *ptrVett, int dim, double val, int i)
+// Funzione che legge un numero dall'utente, assicurandosi che sia valido
+double getNum()
 {
-    if (i >= dim)
+    double valore; // Variabile per memorizzare il numero inserito dall'utente
+    int check;     // Variabile di controllo per verificare la validità dell'input
+    char ch;       // Variabile per memorizzare i caratteri extra nel buffer di input
+
+    // Ciclo per garantire che l'input sia un numero valido
+    do
     {
-        printf("Valore %lf non trovato nel vettore.\n", val);
-        return -1; // Caso base: valore non trovato
-    }
-    if (ptrVett[i] == val)
-    {
-        return i;
-    } // Caso base: valore trovato
-    return ricercaValoreRicorsione(ptrVett, dim, val, i + 1); // Ricorsione per cercare il valore
+        check = scanf("%lf", &valore); // Legge il numero e salva lo stato in 'check'
+        ch = getchar();                // Legge il carattere successivo nel buffer
+        if (check != 1 || ch != '\n')  // Controlla se l'input non è un numero o se ci sono altri caratteri
+        {
+            printf("Errore: Inserisci un numero -> ");
+            while (getchar() != '\n')
+                ; // Consuma i caratteri rimanenti nel buffer di input
+        }
+    } while (check != 1 || ch != '\n'); // Ripete finché l'input non è un numero valido
+
+    return valore; // Restituisce il numero valido inserito dall'utente
 }
-*/
+
+// Ordinamento crescente Bubble sort
+void ordinaCrescente(double *ptrVett, int dim)
+{
+    int i, j;
+    for (i = 0; i < dim - 1; i++)
+    {
+        for (j = 0; j < dim - i - 1; j++)
+        {
+            // Se l'elemento corrente è maggiore del successivo, scambiali
+            if (ptrVett[j] > ptrVett[j + 1])
+            {
+                double temp = ptrVett[j];
+                ptrVett[j] = ptrVett[j + 1];
+                ptrVett[j + 1] = temp;
+            }
+        }
+        // Stampa il vettore dopo ogni passo del Bubble Sort
+        printf("Passo ordinamento %d: ", i + 1);
+        stampaVettore(ptrVett, dim);
+    }
+}
+
+void salvaSuFile(double *ptrVett, int dim)
+{
+
+    char YoN;
+    FILE *file;
+
+    do
+    {
+        file = fopen("Salvataggio.txt", "w"); // Apre il file in modalità scrittura
+
+        if (file == NULL)
+        {
+            printf("Errore durante l'apertura del file.\n");
+            printf("\nVuoi riprovare? ");
+            scelta(&YoN);
+        }
+    } while (&YoN && (file == NULL));
+
+    if (file == NULL)
+    {
+        printf("Impossibile salvare il vettore.");
+        return;
+    }
+
+    fprintf(file, "[ ");
+    for (int i = 0; i < dim; i++)
+    {
+        fprintf(file, "%.3lf ", ptrVett[i]); // Scrive ogni elemento nel file
+    }
+    fprintf(file, "]\n");
+    fclose(file); // Chiude il file
+    printf("Vettore salvato con successo nel file.");
+}

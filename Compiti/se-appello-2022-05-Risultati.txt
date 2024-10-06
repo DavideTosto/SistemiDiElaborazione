@@ -1,0 +1,1 @@
+Array[0] = -1Array[1] = -1Array[2] = -1Array[3] = 18Array[4] = 34

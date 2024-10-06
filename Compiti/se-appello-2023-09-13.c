@@ -19,6 +19,7 @@ void main()
     // countN tiene conto del numero degli elementi di array
     int a, b;
     int valIn;
+    int primoVal;
 
     do
     {
@@ -42,13 +43,14 @@ void main()
         {
             array[countN] = b;
             countN++;
-            if (countN >= 5)
-            {
-                countN--;
-                break;
-            }
+
+            if (countN >= N)
+             break;
+            
         }
     }
+
+    countN--;
     
     // chisura file in lettura e apertura/creazione file risultati
     fclose(ptrFile);
@@ -58,13 +60,15 @@ void main()
     printf("Inserisci un numero: ");
     scanf("%d", &valIn);
 
+    primoVal = array[0];
+
     // stampa dei valori dell array compresi tra il numero inserito da tastiera e il valore del primo elemanto dell' array
     //  valIn < x < array[0] || array[0] < x < valIn
     // se x[i] non fa parte dell' intervallo sostituisce il suo valore con 0
     for (int i = 0; i <= countN; i++)
     {
-        if ((valIn <= array[i] && array[i] <= array[0]) ||
-            (array[0] <= array[i] && array[i] <= valIn))
+        if ((valIn <= array[i] && array[i] <= primoVal) ||
+            (primoVal <= array[i] && array[i] <= valIn))
         {
             printf(" %d ,", array[i]);
         }
