@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define DIM 20 // Definisce la dimensione massima del vettore
 
 // Dichiarazione delle funzioni
@@ -13,9 +14,10 @@ double getNum();
 int main()
 {
     // Introduzione al programma
-    printf("Programma che, ricevuti in ingresso gli elementi di un vettore di dimensione");
-    printf("\nspecificata dall'utente e dimensione massima DIM = 20, implementa, sfruttando la ricorsione, l'ordinamento crescente ");
-    printf("\nopure ricerca un valore inserito da tastiera iterando tra gli elementi.");
+    printf("************* Sistemi di Elaborazione: 'Seconda Etivity' - Studente: Davide Tosto - Matricola: IN08000226 *************");
+    printf("\n\nProgramma che, ricevuti in ingresso gli elementi di un vettore di dimensione specificata dall'utente e dimensione");
+    printf("\nmassima DIM = 20, implementa, sfruttando la ricorsione l'ordinamento decrescente, oppure ricerca un valore inserito");
+    printf("\nda tastiera nel vettore iterando tra gli elementi.");
 
     char riesecuzione, YoN;  // Variabili per gestire l'input dell'utente
     int MSGcambioValori = 0; // Flag per mostrare il messaggio di cambio valori
@@ -40,53 +42,55 @@ int main()
             do
             {
                 printf("\n\nInserisci la dimensione del vettore (max %d): ", DIM);
-                n = (int)getNum(); // Chiede all'utente di inserire la dimensione
-            } while (n <= 0 || n > DIM); // Controllo che la dimensione sia valida
+                n = (int)getNum();                              // Chiede all'utente di inserire la dimensione
+            } while (n <= 0 || n > DIM);                        // Controlla che la dimensione sia valida
 
             // Input degli elementi del vettore
             printf("\nInserisci gli elementi del vettore:\n");
             for (int i = 0; i < n; i++)
             {
-                printf("Inserisci il %d° numero: ", i + 1);
-                vettore[i] = getNum(); // Chiede all'utente di inserire ogni numero
+                printf("Inserisci il %d^ numero: ", i + 1);
+                vettore[i] = getNum();                          // Chiede all'utente di inserire ogni numero
             }
         }
 
         // Stampa del vettore
-        printf("Vettore: ");
+        printf("\nVettore: ");
         stampaVettore(vettore, n); // Funzione per stampare il vettore
 
         // Scelta dell'operazione da eseguire
-        printf("Scegli l'operazione:\n");
+        printf("\nScegli l'operazione:\n");
         printf("1. Ordinamento decrescente\n");
         printf("2. Ricerca di un valore\n");
         printf("3. Ordinamento crescente\n");
         printf("4. Salva il vettore su file\n");
         printf("Operazione da eseguire n. -> ");
+        
         opzione = (int)getNum(); // Chiede all'utente di scegliere un'operazione
-
+        printf("\n");
+        
         switch (opzione)
         {
         case 1:
             // Ordinamento decrescente
             ordinaDecrescente(vettore, n, 0); // Funzione per ordinare il vettore a partire dalla posizione 0
             printf("Vettore ordinato: ");
-            stampaVettore(vettore, n); // Stampa il vettore ordinato
+            stampaVettore(vettore, n);        // Stampa il vettore ordinato
             break;
 
         case 2:
             // Ricerca di un valore
             double valore;
             printf("Inserisci il valore da cercare: ");
-            valore = getNum(); // Inserimento del valore da cercare
-            ricercaValore(vettore, n, valore); // Funzione per cercare il valore
+            valore = getNum();                         // Inserimento del valore da cercare
+            ricercaValore(vettore, n, valore);         // Funzione per cercare il valore
             break;
 
         case 3:
             // Ordinamento crescente
-            ordinaCrescente(vettore, n); // Ordinamento crescente con bubble sort
+            ordinaCrescente(vettore, n);    // Ordinamento crescente con bubble sort
             printf("Vettore ordinato: ");
-            stampaVettore(vettore, n); // Stampa il vettore ordinato
+            stampaVettore(vettore, n);      // Stampa il vettore ordinato
             break;
 
         case 4:
@@ -101,9 +105,9 @@ int main()
 
         // Chiede all'utente se vuole continuare
         printf("\nVuoi continuare? ");
-        scelta(&YoN); // Funzione per la scelta di continuare o meno
+        scelta(&YoN);        // Funzione per la scelta di continuare o meno
         MSGcambioValori = 1; // Attiva il messaggio per cambiare valori alla prossima iterazione
-    } while (YoN); // Ciclo finché l'utente sceglie di continuare
+    } while (YoN);           // Ciclo finché l'utente sceglie di continuare
 
     return 0; // Termina il programma
 }
@@ -114,17 +118,16 @@ void scelta(char *a)
     do
     {
         printf("(Y/N) : ");
-        scanf(" %c", a); // Legge il carattere inserito
+        scanf(" %c", a);                                          // Legge il carattere inserito
     } while ((*a != 'N' && *a != 'n' && *a != 'Y' && *a != 'y')); // Verifica se l'input è valido
 
-    // Converte l'input in valori booleani
     if (*a == 'Y' || *a == 'y')
     {
-        *a = 1; // Se la risposta è Sì
+        *a = 1; // Ritorna 1 se la risposta è Sì
     }
     else
     {
-        *a = 0; // Se la risposta è No
+        *a = 0; // Ritorna 0 se la risposta è No
     }
 }
 
@@ -143,15 +146,15 @@ void stampaVettore(double *ptrVett, int dim)
 void ordinaDecrescente(double *ptrVett, int dim, int i)
 {
     if (i >= dim - 1)
-        return; // Caso base: se si è arrivati alla fine del vettore, termina la ricorsione
+        return;                        // Caso base: se si è arrivati alla fine del vettore, termina la ricorsione
 
-    int maxIndice = i; // Indice dell'elemento massimo
+    int maxIndice = i;                 // Indice dell'elemento massimo
     for (int j = i + 1; j < dim; j++)
     {
         // Cerca il massimo tra gli elementi non ancora ordinati
         if (ptrVett[j] > ptrVett[maxIndice])
         {
-            maxIndice = j; // Aggiorna l'indice del massimo
+            maxIndice = j;             // Aggiorna l'indice del massimo
         }
     }
 
@@ -174,7 +177,7 @@ void ordinaDecrescente(double *ptrVett, int dim, int i)
 // Funzione per la ricerca di un valore nel vettore
 int ricercaValore(double *ptrVett, int dim, double val)
 {
-    int flag = 1; // Flag per verificare se il valore è stato trovato
+    int flag = 1;         // Flag per verificare se il valore è stato trovato
     for (int i = 0; i < dim; i++)
     {
         // Controlla se l'elemento corrente è uguale al valore cercato
@@ -210,7 +213,7 @@ double getNum()
     return valore; // Restituisce il valore valido
 }
 
-// Funzione per ordinare in modo crescente tramite bubble sort
+// Funzione per ordinare in modo crescente tramite metodo bubble sort
 void ordinaCrescente(double *ptrVett, int dim)
 {
     for (int i = 0; i < dim - 1; i++)
@@ -226,6 +229,9 @@ void ordinaCrescente(double *ptrVett, int dim)
                 ptrVett[j + 1] = temp;
             }
         }
+        // Stampa il vettore dopo ogni passo del Bubble Sort
+        printf("Passo ordinamento %d: ", i + 1);
+        stampaVettore(ptrVett, dim);
     }
 }
 
@@ -254,11 +260,12 @@ void salvaSuFile(double *ptrVett, int dim)
     }
 
     // Scrive gli elementi del vettore nel file
-    for (int i = 0; i < dim; i++)
-    {
-        fprintf(file, "%.3lf\n", ptrVett[i]); // Scrive ogni numero nel file
+    fprintf(file, "Vettore: [ ");
+    for (int i = 0; i < dim; i++) {
+        fprintf(file, "%.3lf ", ptrVett[i]); // Scrive ogni elemento nel file
     }
+    fprintf(file, "]\n");
 
     fclose(file); // Chiude il file
-    printf("Vettore salvato nel file vettore.txt.\n"); // Messaggio di conferma
+    printf("Salvataggio effettuato con successo!\n"); // Messaggio di conferma
 }
