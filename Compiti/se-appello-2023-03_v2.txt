@@ -1,0 +1,5 @@
+Array[0] = 0;
+Array[1] = 5;
+Array[2] = 0;
+Array[3] = 0;
+Array[4] = 4;

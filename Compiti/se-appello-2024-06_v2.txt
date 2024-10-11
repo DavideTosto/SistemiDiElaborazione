@@ -1,0 +1,3 @@
+Array[0] = 6
+Array[2] = 9
+Array[4] = 6
