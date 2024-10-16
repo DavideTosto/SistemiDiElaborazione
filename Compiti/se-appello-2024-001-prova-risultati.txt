@@ -1,0 +1,6 @@
+1^ valore: 1;
+2^ valore: -4;
+3^ valore: 3;
+4^ valore: -3;
+5^ valore: -6;
+6^ valore: -3;
